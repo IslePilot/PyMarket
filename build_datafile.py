@@ -40,7 +40,7 @@ def hist_to_csv(filename, history,dividends=None):
       
       if dividends != None:
           for div in dividends:
-              if div['Date'] == history['Date']:
+              if div['Date'] == daily_data['Date']:
                   dividend = div['Dividends']
               
       string+="%s\n"%dividend
