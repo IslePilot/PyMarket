@@ -24,7 +24,11 @@ def hist_to_csv(filename, history,dividends=None):
   outfile = open(filename, 'w')
   
   # add labels
-  outfile.write("date,open,close,adj_close,high,low,volume,dividend\n")
+  outfile.write("date,open,close,adj_close,high,low,volume")
+  if dividends != None:
+      outfile.write(",dividend\n")
+  else:
+      outfile.write("\n")
   
   for daily_data in history:
       string = "%s,"%daily_data['Date']
@@ -33,7 +37,7 @@ def hist_to_csv(filename, history,dividends=None):
       string+="%s,"%daily_data['Adj_Close']
       string+="%s,"%daily_data['High']
       string+="%s,"%daily_data['Low']
-      string+="%s,"%daily_data['Volume']
+      string+="%s"%daily_data['Volume']
       
       # look through the dividend list for a dividend for this date
       dividend = 0.0
@@ -43,14 +47,16 @@ def hist_to_csv(filename, history,dividends=None):
               if div['Date'] == daily_data['Date']:
                   dividend = div['Dividends']
               
-      string+="%s\n"%dividend
+          string+=",%s\n"%dividend
+      else:
+          string+="\n"
       
       outfile.write(string)
   
   # close the file
   outfile.close()
     
-start_date = datetime.date(year=2015, month=1, day = 1)
+start_date = datetime.date(year=1999, month=11, day = 1)
 end_date = datetime.date.today()
 print "Processing from %s to %s\n"%(start_date, end_date)
 
@@ -83,4 +89,4 @@ psq_dividends = list(reversed(Share('PSQ').get_dividend_history(start_string, en
 for date in daterange(start_date, end_date):
     print date
 """
-
+print "Done."
